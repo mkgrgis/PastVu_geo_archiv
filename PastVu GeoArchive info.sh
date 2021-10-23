@@ -1,4 +1,4 @@
 while true; do
-	N=$(echo "SELECT count(*) FROM \"GeoPhoto\";" | psql -p 5434 -A -t -q -d "PastVu");
+	N=$(echo "SELECT count(*) FROM \"PastVu\".\"GeoPhoto\";" | psql -A -t -q -d 'Геоинформационная система');
 	zenity --info --text="$N";
 done;
