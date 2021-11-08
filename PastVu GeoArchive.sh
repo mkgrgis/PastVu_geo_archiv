@@ -8,7 +8,7 @@ if [ "$N" == "1" ]
 then
  	echo "⭮      $i";
 else
-	JSON=$(wget "$API_URL&params={%22cid%22:$1}" -q -O - 2>/dev/null | jq ".result.photo" | sed 's/"/\"/g' | sed "s/'/''/g");
+	JSON=$(wget "$API_URL&params={%22cid%22:$1}" -q -O - -U 'Mozilla/5.0 (X11; Linux x86_64...) Gecko/20100101 Firefox/70.0' 2>/dev/null | jq ".result.photo" | sed 's/"/\"/g' | sed "s/'/''/g" ); #| tr -d '\0'
 	if [ "$JSON" == "" ]; then
         void=0;
         s='🗴';
@@ -21,7 +21,7 @@ else
             s='🗴';
         else
             void=0;
-            JSON="'$JSON'";
+            JSON="replace('$JSON', '\u0000', '' )::jsonb";
         fi        
     fi
 	r=$(DB_SQL "INSERT INTO $API_table (\"Id\", \"JSON\", \"void\") VALUES ($1, $JSON, $void::bool) RETURNING \"Id\";");
@@ -54,7 +54,7 @@ fi
 }
 
 PastVu_diapazon (){
-n=10;
+n=30;
 for ((i=$1; i < $2; i++))
 do
 	i1=$(($i+$n));
