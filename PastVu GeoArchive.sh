@@ -8,7 +8,7 @@ if [ "$N" == "1" ]
 then
  	echo "⭮      $i";
 else
-	JSON=$(wget "$API_URL&params={%22cid%22:$1}" -q -O - 2>/dev/null | jq ".result.photo" | sed 's/"/\"/g' | sed "s/'/''/g" | tr -d '\0');
+	JSON=$(wget "$API_URL&params={%22cid%22:$1}" -q -O - 2>/dev/null | jq ".result.photo" | sed 's/"/\"/g' | sed "s/'/''/g");
 	if [ "$JSON" == "" ]; then
         void=0;
         s='🗴';
